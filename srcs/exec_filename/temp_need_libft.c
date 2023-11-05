@@ -1,4 +1,5 @@
-#include <stdlib.h>
+#include "../../incs/minishell.h"
+#include "../../incs/exec_filename.h"
 
 size_t	ft_strlen(const char *s)
 {

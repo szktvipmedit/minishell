@@ -1,9 +1,4 @@
-#include <stdlib.h>
-#include <unistd.h>
-
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
+#include "../incs/minishell.h"
 
 int	main(void)
 {

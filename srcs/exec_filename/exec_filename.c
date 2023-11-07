@@ -1,6 +1,13 @@
 #include "../../incs/minishell.h"
 #include "../../incs/exec_filename.h"
 
+void execve_cmd(t_exec_cmd_info *exec_cmd_info, char **envp)
+{
+	dup2(exec_cmd_info->pipe_fd[1], 1);
+	close(exec_cmd_info->pipe_fd[0]);
+	execve(exec_cmd_info->cmd_path, exec_cmd_info->arg_cmds, envp);
+}
+
 static void error_message(char *cmd)
 {
 	write(STDERR, MINISHELL, ft_strlen(MINISHELL));
@@ -42,16 +49,23 @@ static char *search_cmd_from_path(char **paths, char *cmd)
 //arg_cmd_block: "wc -c"のような、コマンドとオプションの塊
 void exec_filename(char *arg_cmd_block, char **envp)
 {
-	char **paths;
-	char *cmd_path;
-	char **arg_cmds;
-	arg_cmds = ft_split(arg_cmd_block, ' ');
-	paths = get_paths(envp);
-	cmd_path = search_cmd_from_path(paths, arg_cmds[0]);
-	if(!cmd_path)
-		exit(1);
-	execve(cmd_path, arg_cmds, envp);
-	free(cmd_path);
+	t_exec_cmd_info exec_cmd_info;
+	char buf[_MAX];	
+	if(pipe(exec_cmd_info.pipe_fd) < 0)
+		return;
+	exec_cmd_info.arg_cmds = ft_split(arg_cmd_block, ' ');
+	exec_cmd_info.paths = get_paths(envp);
+	exec_cmd_info.cmd_path = search_cmd_from_path(exec_cmd_info.paths, exec_cmd_info.arg_cmds[0]);
+	if(!exec_cmd_info.cmd_path)
+		exit(1);//notice: error_message()?
+	exec_cmd_info.child_pid = fork();
+	if(exec_cmd_info.child_pid == 0)
+		execve_cmd(&exec_cmd_info, envp);
+	waitpid(-1, NULL, 0);
+	if(read(exec_cmd_info.pipe_fd[0], buf, SIZE_MAX) < 0)
+		exit(1);//notice: error_message()?
+	printf("%s", buf);
+	free(exec_cmd_info.cmd_path);
 }
 
 

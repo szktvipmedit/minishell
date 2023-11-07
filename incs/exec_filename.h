@@ -8,6 +8,15 @@
 #define MINISHELL "minishell: "
 #define NOT_FOUND_CMD "command not found\n"
 
+typedef struct s_exec_cmd_info
+{
+    pid_t child_pid;
+    int pipe_fd[2];
+    char **arg_cmds;
+    char **paths;
+    char *cmd_path;
+}              t_exec_cmd_info;
+
 void exec_filename(char *cmd, char **envp);
 size_t	ft_strlen(const char *s);
 char	*ft_strjoin(char const *s1, char const *s2);

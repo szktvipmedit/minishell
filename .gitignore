@@ -1,0 +1,5 @@
+objs/
+*dSYM
+.vscode/
+*/a.out
+pipex

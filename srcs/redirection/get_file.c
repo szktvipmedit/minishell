@@ -1,26 +1,27 @@
-#include "../..//incs/minishell.h"
+#include "../../incs/minishell.h"
 
-void get_outfile(t_redirect_node *redirectj, int argc, char **argv)
+void get_outfile(t_redirect_node *redirect)
 {
-    redirect->outfile = open(argv[argc - 1], O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH );
-    if(redirect->outfile < 0)
-        error_message(ERR_OPEN);
+    redirect->target_fd = open(redirect->target_filename, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH );
+    if(redirect->target_fd < 0)
+        error_message(ERROR_OPEN);
 }
 
-void get_infile_case_heredoc(t_redirect_node *redirectj, char **argv)
+void get_infile_case_heredoc(t_redirect_node *redirect)
 {
     int temp_fd;
     char *buf;
     temp_fd = open(".temp_heredoc", O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-    if(redirect->infile < 0)
-        error_message(ERR_OPEN);
+    if(redirect->target_fd < 0)
+        error_message(ERROR_OPEN);
     while(1)
     {
+        write(2, ">", 1);
         buf = get_next_line(0);
         if(!buf)
             exit(1);
         buf[ft_strlen(buf) - 1] = '\0';
-        if(!ft_strncmp(argv[2], buf, ft_strlen(argv[2]) + 1))
+        if(!ft_strncmp(redirect->target_filename, buf, ft_strlen(redirect->target_filename) + 1))
         {
             free(buf);
             break;
@@ -30,29 +31,25 @@ void get_infile_case_heredoc(t_redirect_node *redirectj, char **argv)
         free(buf);
     }
     close(temp_fd);
-    redirect->infile = open(".temp_heredoc", O_RDONLY);
-    if(redirect->infile < 0)
+    redirect->target_fd = open(".temp_heredoc", O_RDONLY);
+    if(redirect->target_fd < 0)
     {
         unlink(".temp_heredoc");
-        error_message(ERR_OPEN);
+        error_message(ERROR_OPEN);
     }
 }
 
-void get_infile_case_default(t_node *parse_node)
+void get_infile_case_default(t_redirect_node *redirect)
 {
-    
-    if(ft_strncmp(parse_node->args[0].word, "<", 2) || ft_strncmp(parse_node->args[0].word, ">", 2) ||ft_strncmp(parse_node->args[0].word, "<<", 3) ||ft_strncmp(parse_node->args[0].word, ">>", 3))
-
-    parse_node->redirect->infile = open(argv[1], O_RDONLY);
-    if(parse_node->redirect->infile < 0)
-        error_message(ERR_OPEN);
-
+    redirect->target_fd = open(redirect->target_filename, O_RDONLY);
+    if(redirect->target_fd < 0)
+        error_message(ERROR_OPEN);
 }
 
-void  get_infile(t_node *parse_node)
+void  get_infile(t_node *parser_node)
 {
-    if(parse_node->type == HEREDOC)
-        get_infile_case_heredoc(parse_node);        
+    if(parser_node->type == HEREDOC)
+        get_infile_case_heredoc(parser_node->redirect);        
     else
-        get_infile_case_default(parse_node);
+        get_infile_case_default(parser_node->redirect);
 }

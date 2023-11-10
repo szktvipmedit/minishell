@@ -2,6 +2,7 @@
 
 void get_outfile(t_redirect_node *redirect)
 {
+    printf("target_filenname: %s\n", redirect->target_filename);
     redirect->target_fd = open(redirect->target_filename, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH );
     if(redirect->target_fd < 0)
         error_message(ERROR_OPEN);
@@ -19,9 +20,9 @@ void get_infile_case_heredoc(t_redirect_node *redirect)
         write(2, ">", 1);
         buf = get_next_line(0);
         if(!buf)
-            exit(1);
+            perror("heredoc: get_infile_case_heredoc");
         buf[ft_strlen(buf) - 1] = '\0';
-        if(!ft_strncmp(redirect->target_filename, buf, ft_strlen(redirect->target_filename) + 1))
+        if(!ft_strncmp(redirect->limiter, buf, ft_strlen(redirect->limiter) + 1))
         {
             free(buf);
             break;

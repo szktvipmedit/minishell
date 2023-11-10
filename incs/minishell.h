@@ -14,6 +14,7 @@
 #define WORD 0
 #define OPERATOR 1
 
+#define COMMAND 0
 #define INPUT 1
 #define OUTPUT 2
 #define HEREDOC 3
@@ -62,7 +63,7 @@ typedef struct s_env_info
 
 //clear.c
 void redirect_node_clear(t_redirect_node *redirect);
-void parent_clear(t_redirect_node *redirect);
+void parent_clear(t_node *parse_node);
 
 //get_file.c
 void  get_infile(t_node *parse_node);
@@ -72,10 +73,14 @@ void get_outfile(t_redirect_node *redirect);
 void error_message(char *error_message);
 
 // child.c
-void child(t_node *parse_node, t_env_info env_info, char **envp);
+void child(t_node *parse_node, t_env_info env_info, char **envp, int parse_idx);
 
 //redirection.c
 void get_paths(t_env_info *env_info, char **envp);
-void redirection(t_node parse_node, t_env_info env_info, char **envp);
+void redirection(t_node *parse_node, t_env_info env_info, char **envp, int parse_idx);
+
+
+//pipe.c
+int ft_pipe(t_node *parse_node, t_env_info env_info, char **envp);
 
 #endif

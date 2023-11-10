@@ -20,7 +20,7 @@ char	*find_command(char **paths, char *cmd)
 
 
 
-void child(t_node *parse_node, t_env_info env_info, char **envp)
+void child(t_node *parse_node, t_env_info env_info, char **envp, int parse_idx)
 {
     t_redirect_node *redirect;
     redirect = parse_node->redirect;
@@ -32,12 +32,17 @@ void child(t_node *parse_node, t_env_info env_info, char **envp)
     }
     else if(parse_node->type == OUTPUT || parse_node->type == APPEND)
     {
-        dup2(redirect->target_fd, 1);
-        close(redirect->pipe_fd[1]);
-        dup2(redirect->pipe_fd[0], 0);
+    printf("    cmd path \n");
+        dup2(parse_node->prev->redirect->pipe_fd[0], 0);
+        close(parse_node->prev->redirect->pipe_fd[1]);
+    printf("    cmd path \n");
+        //notice: parse_idxが0の時ここにくるとsegmentation faultになる。そもそも1つ目からこの処理に辿り着くのか？
+        // dup2(redirect->target_fd, 1);
+        
     }
     redirect->split_cmd_args = ft_split(redirect->cmd_args, ' ');
     redirect->cmd_path = find_command(env_info.paths, redirect->split_cmd_args[0]);
+
     if(!redirect->cmd_path)
     {
         // child_clear();

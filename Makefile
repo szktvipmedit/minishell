@@ -5,13 +5,15 @@ SRCS = srcs/redirection/test.c \
 	   srcs/redirection/get_file.c \
 	   srcs/redirection/redirect_input.c \
 	   srcs/redirection/redirection.c \
+	   srcs/pipe/pipe.c \
+	#    .c \
 	#    .c \
 
 
 OBJS = ${patsubst $(SRCS_DIR)%.c,  $(OBJS_DIR)%.o, $(SRCS)}
 
 NAME = minishell
-SRCS_DIR = srcs/redirection/
+SRCS_DIR = srcs/
 OBJS_DIR = objs/
 INCS_DIR = incs/
 LIBFT_DIR = libft/

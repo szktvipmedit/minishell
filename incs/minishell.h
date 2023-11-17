@@ -6,7 +6,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
-# include <stddbool.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
@@ -57,8 +57,8 @@ typedef struct s_redirect_node
 
 	// cmd infomation
 
-    t_redirect_node *prev;
-    t_redirect_node *next;
+    struct s_redirect_node *prev;
+    struct s_redirect_node *next;
 
 }					t_redirect_node;
 
@@ -104,7 +104,7 @@ void				parent_clear(t_node *parse_node);
 
 // get_file.c
 void				get_infile(t_node *parse_node);
-void				get_outfile(t_redirect_node *redirect);
+void				get_outfile(t_node *parse_node);
 void				get_infile_case_heredoc(t_redirect_node *redirect);
 // error.c
 // int redirection_args_check(t_node *parse_node);
@@ -119,14 +119,17 @@ char				*find_command(char **paths, char *cmd);
 void				get_paths(t_shell *shell, char **envp);
 void				redirection(t_line *line, t_node *parse_node,
 						t_shell shell);
+//redirect_init.c
+void redirect_init(t_line *line, t_node *parse_node);
 
 // pipe.c
 int					ft_pipe(t_line *line, t_shell shell);
 
 //create_parse_pipes.c
 int get_parse_cnt(t_node *node);
-int get_pipe_cnt(t_line *line, char *line);
-void create_pipes(t_line *line);
+void create_pipes(t_line *line, t_node *parse_node);
+// int get_pipe_cnt(t_line *line, char *line);
 
-
+//exec_path
+void exec_path(t_line *line, t_node *parse_node, t_shell shell);
 #endif

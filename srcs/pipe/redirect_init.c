@@ -1,13 +1,13 @@
 #include "../../incs/minishell.h"
 
-void get_outfile_output(t_parse_node *parse_node, t_redirect_node *redirect)
+void get_outfile_output(t_node *parse_node, t_redirect_node *redirect)
 {
     parse_node->outfile = open(redirect->target_filename, O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH );
     if(parse_node->outfile < 0)
         error_message(ERROR_OPEN);
 }
 
-void get_outfile_append(t_parse_node *parse_node, t_redirect_node *redirect)
+void get_outfile_append(t_node *parse_node, t_redirect_node *redirect)
 {
     parse_node->outfile = open(redirect->target_filename, O_WRONLY | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH );
     if(parse_node->outfile < 0)
@@ -23,12 +23,12 @@ void get_outfile(t_node *parse_node)
         if(redirect->type == OUTPUT)
             get_outfile_output(parse_node, redirect);
         else if(redirect->type == APPEND)
-            get_outfile_append(parse_node, redirect)
+            get_outfile_append(parse_node, redirect);
         redirect = redirect->next;
     }
 }
 
-void get_infile_heredoc(t_node *parse_node)
+void get_infile_heredoc(t_node *parse_node, t_redirect_node *redirect)
 {
     int temp_fd;
     char *buf;
@@ -82,7 +82,7 @@ void get_infile(t_node *parse_node)
         if(redirect->type == INPUT)
             get_infile_input(parse_node, redirect);
         else if(redirect->type == HEREDOC)
-            get_infile_heredoc()
+            get_infile_heredoc(parse_node, redirect);
         redirect = redirect->next;
     }
 }
@@ -92,17 +92,17 @@ void io_file_init(t_line *line, int parse_idx,  t_node *parse_node)
     if(parse_idx == 0)
     {
         parse_node->infile = 0;//notice: 標準入力でいいのかわからない。多分いいと思ってるけど.
-        parse_node->outfile = line->pipe_fd[(parse_idx *2) + 1]
+        parse_node->outfile = line->pipe_fd[(parse_idx *2) + 1];
     }
     else if(parse_idx == line->pipe_cnt+1)
     {
-        parse_node->infile = line->pipe_fd[(parse_idx * 2) - 2]
+        parse_node->infile = line->pipe_fd[(parse_idx * 2) - 2];
         parse_node->outfile = 1;
     }
     else
     {
-        parse_node->infile = line->pipe_fd[(parse_idx * 2) - 2]
-        parse_node->outfile = line->pipe_fd[(parse_idx *2) + 1]
+        parse_node->infile = line->pipe_fd[(parse_idx * 2) - 2];
+        parse_node->outfile = line->pipe_fd[(parse_idx *2) + 1];
     }
 }
 

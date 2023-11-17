@@ -1,14 +1,21 @@
-SRCS = srcs/redirection/test.c \
-	   srcs/redirection/child.c \
-	   srcs/redirection/clear.c \
-	   srcs/redirection/error.c \
-	   srcs/redirection/get_file.c \
-	   srcs/redirection/redirect_input.c \
-	   srcs/redirection/redirection.c \
-	   srcs/pipe/pipe.c \
-	#    .c \
-	#    .c \
+# SRCS = srcs/redirection/test.c \
+# 	   srcs/redirection/child.c \
+# 	   srcs/redirection/clear.c \
+# 	   srcs/redirection/error.c \
+# 	   srcs/redirection/get_file.c \
+# 	   srcs/redirection/redirect_input.c \
+# 	   srcs/redirection/redirection.c \
+# 	   srcs/pipe/pipe.c \
+# 	#    .c \
+# 	#    .c \
 
+SRCS = srcs/pipe/pipe.c \
+		srcs/create_parse_pipes.c \
+		srcs/redirect_init.c \
+		srcs/exec_path/exec_path.c \
+		srcs/main.c \
+	#    .c \
+	#    .c
 
 OBJS = ${patsubst $(SRCS_DIR)%.c,  $(OBJS_DIR)%.o, $(SRCS)}
 

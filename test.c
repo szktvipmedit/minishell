@@ -20,6 +20,7 @@ INPUT:
                 < file1 file2 ...fileN cmd
             とすると、[file1]に対して[file2というcmd]を実行しようとする。
 
+
         仮説:
             error_messageの判定について
                 <の位置が基準となって
@@ -35,8 +36,35 @@ INPUT:
         ・cmdの判定を曖昧にする
             cat cat < fileに対して
                 cat: cat: No such file or directory
-            というエラーメッセージがでることから　、２つ目のcatはcatコマンド内で判定されていることがわかり、redirectionのステップでは[cat cat]をコマンドとして処理する
+            というエラーメッセージがでることから　、２つ目のcatはcatコマンド内で判定されていることがわかるため、redirectionのステップでは[cat cat]をコマンドとして処理する
+
+    test case:
+        notice: each file contain "This is [file title]]"
+        ・　　< file cat < file3 cat file2
+            return : cat: cat: No such file or directory 
+                     this is file2
+            挙動    : file,file3は標準入力からcatに吸い込まれ、2番目のcatとfile2だけが引数として機能した
+            考察    : cmdはリダイレクトの役割(< file cat)と引数実行の役割(cat < file3 cat file2)を同時にこなす。
+        ・ << end　cat > grep hello
+                
 OUTPUT:
+    infomation:
+        ・基本文法
+            1. > file cmd
+                arg[0] == "<"のとき
+                    arg[1]: file
+                    arg[2]: cmd
+            2. cmd > file
+            arg[1] == "<"のとき
+                arg[0]: cmd
+                arg[2]: file
+    
+    test case:
+        ・ cat file1 > file2 > file3
+        挙動    : file3にfile1の内容が書き込まれ、file2は空になる。
+        考察    : 出力リダイレクトの順番として、file1 > file2では
+                　　　完全に新しいファイルとしてfile2をopen → file1の出力を読み取り → 次の出力先に書き込み
+                　　　という順番になっている。よってfile2が空になる
 
 HERE_DOC:
     infomation:

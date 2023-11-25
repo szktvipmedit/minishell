@@ -57,7 +57,7 @@ static void	ft_exec_single_node(t_node	*node, t_shell *shell)
 }
 */
 
-static void output_strings(int i, bool option_flag, char **split_cmd_args[i])
+static void output_strings(int i, bool option_flag, char **split_cmd_args)
 {
     while(split_cmd_args[i])
     {

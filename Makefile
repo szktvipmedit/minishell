@@ -1,8 +1,30 @@
 CC			= cc
 CFLAGS	= -Wall -Wextra -Werror
 LFLAGS	= -L ./libft -lft
+LDFLAGS = -L $(shell brew --prefix readline)/lib -lreadline
+INCLUDE = -I $(shell brew --prefix readline)/include
 
-SRCS		= minishell.c
+SRCS		= minishell.c \
+					exit.c \
+					signal.c \
+					shell_loop.c \
+					tokenize.c \
+					tokenize_utils_1.c \
+					tokenize_utils_2.c \
+					syntax.c \
+					parse.c \
+					parse_utils.c \
+					expand.c \
+					expand_utils_1.c \
+					expand_utils_2.c \
+					heredoc.c \
+					execute.c \
+					execute_utils.c \
+					exec_cmd.c \
+					exec_redirects.c \
+					exec_multiple.c \
+					exec_multiple_utils.c \
+					free.c
 
 OBJS		= $(SRCS:.c=.o)
 LIBFT		= ./libft/libft.a
@@ -12,13 +34,13 @@ NAME		= minishell
 all:			$(NAME)
 
 $(NAME):	$(LIBFT) $(OBJS)
-					$(CC) $(CFLAGS) $(LFLAGS) $(SRCS) -o $(NAME)
+					$(CC) $(CFLAGS) $(LFLAGS) $(LDFLAGS) $(INCLUDE) $(SRCS) -o $(NAME)
 
 $(LIBFT):	
 					@make -C ./libft/
 
 %.o:			%.c $(HEADER)
-					$(CC) $(CFLAGS) -c $< -o $@
+					$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
 clean:
 					@make clean -C ./libft/

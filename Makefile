@@ -24,7 +24,17 @@ SRCS		= minishell.c \
 					exec_redirects.c \
 					exec_multiple.c \
 					exec_multiple_utils.c \
-					free.c
+					free.c \
+					builtin/ft_pwd.c \
+					builtin/ft_echo.c \
+					builtin/ft_env.c \
+					builtin/ft_exit.c \
+					builtin/ft_exit_utils.c \
+					builtin/ft_export.c \
+					builtin/ft_export_utils.c \
+					builtin/ft_unset.c \
+					builtin/ft_unset_utils.c \
+					builtin/builtin_utils.c \
 
 OBJS		= $(SRCS:.c=.o)
 LIBFT		= ./libft/libft.a
@@ -37,7 +47,7 @@ $(NAME):	$(LIBFT) $(OBJS)
 					$(CC) $(CFLAGS) $(LFLAGS) $(LDFLAGS) $(INCLUDE) $(SRCS) -o $(NAME)
 
 $(LIBFT):	
-					@make -C ./libft/
+					@make bonus -C ./libft/
 
 %.o:			%.c $(HEADER)
 					$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@

@@ -125,9 +125,11 @@ int		ft_create_src_variable(char **old_word, char **src, t_shell *shell);
 void	ft_heredoc(t_node *node, t_shell *shell);
 
 // execute.c
+void ft_exec_single_builtin(t_node *node, t_shell *shell);
 void	ft_execute(t_node	*node, t_shell *shell);
 
 // execute_utils.c
+bool	ft_is_builtin(char *arg);
 void	ft_exec_child(t_node node, t_shell *shell);
 void	ft_set_exit_status(int status);
 
@@ -149,4 +151,32 @@ void	ft_free_token(t_token *token);
 void	ft_free_redirects(t_redirect *redirects, size_t redirects_count);
 void	ft_free_node(t_node *node, t_shell *shell);
 
+//builtin
+int ft_echo(char *cmd_args);
+void ft_cd(t_node *node, t_shell *shell, char *cmd_args, char **envp);
+void ft_pwd(char *cmd_args);
+int ft_exit(char *cmd_args);
+int ft_export(char *cmd_args, char **envp);
+int ft_env(char *cmd_args, char **envp, t_node *node, t_shell *shell);
+int ft_unset(char *cmd_args, char **envp);
+
+//builtin/exit_utils.c
+bool isnum(char *arg);
+bool is_llnum(char *arg);
+
+//builtin/export/export_utils.c
+void append_env_variable(char *text,char **env);
+void env_change_content(char *var_equal, char *text, char **envp);
+bool is_exist_variable(char *var_equal, char **env);
+int get_name_equal_len(char *arg);
+int is_valid_new_variable(char *arg);
+
+//builtin/unset/unset_utils.c
+void already_exist_variable_delete(char *var_equal, char **envp);
+int is_valid_arg(char *arg);
+
+//builtin/builtin_utils.c
+void ft_split_all_free(char **array);
+char *getenv_curr_env(char *var_equal, char **envp);
+int get_cmd_args_cnt(char **split_cmd_args);
 #endif

@@ -153,7 +153,7 @@ void	ft_free_node(t_node *node, t_shell *shell);
 
 //builtin
 int ft_echo(char *cmd_args);
-void ft_cd(t_node *node, t_shell *shell, char *cmd_args, char **envp);
+void ft_cd(char *cmd_args, char **envp);
 void ft_pwd(char *cmd_args);
 int ft_exit(char *cmd_args);
 int ft_export(char *cmd_args, char **envp);
@@ -179,4 +179,10 @@ int is_valid_arg(char *arg);
 void ft_split_all_free(char **array);
 char *getenv_curr_env(char *var_equal, char **envp);
 int get_cmd_args_cnt(char **split_cmd_args);
+
+//builtin/cd_utils.c
+void cd_error_message(t_list *arg_list);
+int count_char_until_slash(int i, char *buf);
+void designated_home(char *buf, char **envp);
+void designated_parent(char *buf);
 #endif

@@ -27,6 +27,8 @@ SRCS		= minishell.c \
 					free.c \
 					builtin/ft_pwd.c \
 					builtin/ft_echo.c \
+					builtin/ft_cd.c \
+					builtin/ft_cd_utils.c \
 					builtin/ft_env.c \
 					builtin/ft_exit.c \
 					builtin/ft_exit_utils.c \

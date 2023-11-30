@@ -15,7 +15,6 @@ static int	ft_check_option_is_valid(char *str)
 void	ft_echo(char **args)
 {
 	bool	is_option_n;
-	
 	is_option_n = false;//最初は”-nオプションなし”に設定。
 	while (*args != NULL && ft_strncmp(*args, "-n", 2) == 0)//引数の文字列を”一列”ずつ確認する。//最初の２文字だけをチェック。
 	{

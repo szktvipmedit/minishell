@@ -171,4 +171,30 @@ void	ft_env(char **args, t_shell *shell);
 // builtin/ft_pwd.c
 void	ft_pwd(t_shell *shell);
 
+// builtin/ft_export.c
+int						ft_export(char *cmd_args, t_shell *shell);
+void					append_env_variable(char *text, char **env);
+void					env_change_content(char *var_equal, char *text,
+							char **envp);
+bool					is_exist_variable(char *var_equal, char **env);
+int						get_name_equal_len(char *arg);
+int						is_valid_new_variable(char *arg);
+
+// builtin/ft_unset.c
+int						ft_unset(char *cmd_args, t_shell *shell);
+void					already_exist_variable_delete(char *var_equal,
+							char **envp);
+int						is_valid_arg(char *arg);
+
+// builtin/ft_cd.c
+void					ft_cd(char *cmd_args, t_shell *shell);
+void					cd_error_message(t_list *arg_list);
+int						count_char_until_slash(int i, char *buf);
+void					designated_home(char *buf, char **envp);
+void					designated_parent(char *buf);
+
+// builtin/builtin_utils.c
+void					ft_split_all_free(char **array);
+char					*getenv_curr_env(char *var_equal, char **envp);
+int						get_cmd_args_cnt(char **split_cmd_args);
 #endif

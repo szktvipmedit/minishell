@@ -30,7 +30,14 @@ SRCS		= minishell.c \
 					builtin/ft_echo.c \
 					builtin/ft_exit.c \
 					builtin/ft_env.c \
-					builtin/ft_pwd.c
+					builtin/ft_pwd.c \
+					builtin/ft_export.c \
+					builtin/ft_export_utils.c \
+					builtin/ft_unset.c \
+					builtin/ft_unset_utils.c \
+					builtin/ft_cd.c \
+					builtin/ft_cd_utils.c \
+					builtin/builtin_utils.c
 
 OBJS		= $(SRCS:.c=.o)
 LIBFT		= ./libft/libft.a

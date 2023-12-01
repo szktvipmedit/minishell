@@ -20,7 +20,7 @@ int	is_valid_arg(char *arg)
 	init_arg = arg;
 	if (ft_strchr(init_arg, '='))
 	{
-		printf("-minishell: unset: `%s': not a valid identifier\n", init_arg);
+		printf("minishell: unset: `%s': not a valid identifier\n", init_arg);
 		return (1);
 	}
 	while (*arg)
@@ -31,13 +31,13 @@ int	is_valid_arg(char *arg)
 			if (*arg == '!')
 			{
 				if (*(arg + 1) == '=')
-					printf("-minishell: export: `%s': not a valid identifier\n",
+					printf("minishell: export: `%s': not a valid identifier\n",
 						init_arg);
 				else
-					printf("-minishell: %s: event not found\n", arg);
+					printf("minishell: %s: event not found\n", arg);
 			}
 			else
-				printf("-minishell: export: `%s': not a valid identifier\n",
+				printf("minishell: export: `%s': not a valid identifier\n",
 					init_arg);
 			return (1);
 		}

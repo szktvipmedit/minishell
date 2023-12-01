@@ -32,7 +32,7 @@ static void	arg1_case(char **envp)
 	}
 }
 
-static void	setting_env_variable(char **split_cmd_args, char **envp)
+static void	setting_env_variable(char **split_cmd_args, char **envp, t_shell *shell)
 {
 	char	*var_name_equal;
 	int		i;
@@ -44,6 +44,8 @@ static void	setting_env_variable(char **split_cmd_args, char **envp)
 			arg1_case(envp);
 		var_name_equal = ft_strndup(split_cmd_args[i],
 				get_name_equal_len(split_cmd_args[i]));
+    	if(!var_name_equal) 
+   		    ft_free_all_and_exit(shell, 1);
 		if (is_valid_new_variable(split_cmd_args[i]))
 		{
 			i++;
@@ -53,7 +55,7 @@ static void	setting_env_variable(char **split_cmd_args, char **envp)
 		if (is_exist_variable(var_name_equal, envp))
 			env_change_content(var_name_equal, split_cmd_args[i], envp);
 		else
-			append_env_variable(split_cmd_args[i], envp);
+			append_env_variable(split_cmd_args[i], envp, shell);
 		i++;
 	}
 }
@@ -63,11 +65,13 @@ int	ft_export(char *cmd_args, t_shell *shell)
 	int argc;
 	char **split_cmd_args;
 	split_cmd_args = ft_split(cmd_args, ' ');
+    if(!split_cmd_args) 
+        ft_free_all_and_exit(shell, 1);
 	argc = get_cmd_args_cnt(split_cmd_args);
 	if (argc == 1)
 		arg1_case(shell->environ_list_head);
 	else
-		setting_env_variable(split_cmd_args, shell->environ_list_head);
+		setting_env_variable(split_cmd_args, shell->environ_list_head, shell);
 	ft_split_all_free(split_cmd_args);
 	return (0);
 }

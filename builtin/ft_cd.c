@@ -62,17 +62,29 @@ static void rewrite_buf(t_list *arg_path_list, char *buf, char **envp)
     }
 }
 
-static void chdir_designated(char **split_cmd_args, char **envp)
+static void chdir_designated(char **split_cmd_args, char **envp, t_shell *shell)
 {
     char *buf;
+    struct stat stat_buf;
     t_list *arg_path_list;
 
     buf = ft_calloc(PATH_MAX + 1, 1);
+    if(!buf) 
+        ft_free_all_and_exit(shell, 1);
     getcwd(buf, PATH_MAX);
+    printf("getcwd : %s\n", buf);
     arg_path_list = create_path(split_cmd_args[1]);
-    rewrite_buf(arg_path_list, buf, envp); 
+    rewrite_buf(arg_path_list, buf, envp);
+    if(!buf[0])
+        buf[0] = '/';
     if(chdir(buf) < 0)
-        cd_error_message(arg_path_list);
+    {
+        if(stat(buf, &stat_buf) && S_ISDIR(stat_buf.st_mode))
+            cd_error_message(arg_path_list);
+        else
+            printf("minishell: cd: %s: Not a directory\n", split_cmd_args[1]);
+    }
+    printf("%s\n", buf);
     ft_lstclear(&arg_path_list, del);
     free(buf);
 }
@@ -82,10 +94,12 @@ void ft_cd(char *cmd_args, t_shell *shell)
     int argc;
     char **split_cmd_args;
     split_cmd_args = ft_split(cmd_args, ' ');
+    if(!split_cmd_args) 
+        ft_free_all_and_exit(shell, 1);
     argc = get_cmd_args_cnt(split_cmd_args);
     if(argc == 1)
         chdir(getenv_curr_env("HOME=", shell->environ_list_head));
     else
-        chdir_designated(split_cmd_args, shell->environ_list_head);
+        chdir_designated(split_cmd_args, shell->environ_list_head, shell);
     ft_split_all_free(split_cmd_args);
 }

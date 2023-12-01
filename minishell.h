@@ -9,6 +9,7 @@
 # include <readline/history.h>
 # include <termios.h>
 # include <sys/ioctl.h>
+#include <sys/stat.h>
 
 # define WITHOUT_EXIT -1
 
@@ -174,7 +175,7 @@ void	ft_pwd(t_shell *shell);
 
 // builtin/ft_export.c
 int						ft_export(char *cmd_args, t_shell *shell);
-void					append_env_variable(char *text, char **env);
+void					append_env_variable(char *text, char **env, t_shell *shell);
 void					env_change_content(char *var_equal, char *text, char **envp);
 bool					is_exist_variable(char *var_equal, char **env);
 int						get_name_equal_len(char *arg);

@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-void	append_env_variable(char *text, char **env)
+void	append_env_variable(char *text, char **env, t_shell *shell)
 {
 	size_t	i;
 
@@ -8,6 +8,8 @@ void	append_env_variable(char *text, char **env)
 	while (env[i] != NULL)
 		i++;
 	env[i] = ft_strdup(text);
+    if(!env[i]) 
+        ft_free_all_and_exit(shell, 1);
 	env[i + 1] = NULL;
 }
 
@@ -62,13 +64,13 @@ int	is_valid_new_variable(char *arg)
 			if (*arg == '!')
 			{
 				if (*(arg + 1) == '=')
-					printf("-minishell: export: `%s': not a valid identifier\n",
+					printf("minishell: export: `%s': not a valid identifier\n",
 						init_arg);
 				else
-					printf("-minishell: %s: event not found\n", arg);
+					printf("minishell: %s: event not found\n", arg);
 			}
 			else
-				printf("-minishell: export: `%s': not a valid identifier\n",
+				printf("minishell: export: `%s': not a valid identifier\n",
 					init_arg);
 			return (1);
 		}

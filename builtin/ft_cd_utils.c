@@ -2,7 +2,7 @@
 
 void cd_error_message(t_list *arg_list)
 {
-    printf("-minishell: cd: ");
+    printf("minishell: cd: ");
     while(arg_list)
     {
         printf("%s", (char *)arg_list->content);
@@ -39,6 +39,8 @@ void designated_parent(char *buf)
 {
     int len;
     len = ft_strlen(buf);
+    if(!len)
+        return;
     while(len >= 0)
     {
         if(*(buf + len - 1) == '/')

@@ -7,8 +7,21 @@ static void	arg1_case_print(char search, char **envp)
 	i = 0;
 	while (envp[i] != NULL)
 	{
-		if (envp[i][0] == search)
-			printf("declare -x %s\n", envp[i]);
+		int j = 0;
+		if(search == '_' && envp[i][1] == '=')
+			return ;
+		if (envp[i][j] == search)
+		{
+        	printf("declare -x ");
+			while(envp[i][j] && envp[i][j] != '=')
+				printf("%c", envp[i][j++]);
+			if(envp[i][j] && envp[i][j++] == '=')
+				printf("=");
+			printf("\"");
+			while(envp[i][j] && envp[i][j] != '=')
+				printf("%c", envp[i][j++]);
+			printf("\"\n");
+		}
 		i++;
 	}
 }

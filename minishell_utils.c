@@ -20,3 +20,9 @@ int	ft_is_amb(t_type type, char *target_name)//行数文字数制限のため切
 {
 	return (type == INPUTFILE && ft_strncmp(target_name, "$?", 2) == 0);
 }
+
+void	ft_put_exit_or_not(t_shell *shell)
+{
+	if (shell->is_multiple_node != 1)
+		ft_putstr_fd("exit\n", 2);
+}

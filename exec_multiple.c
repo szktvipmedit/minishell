@@ -30,6 +30,7 @@ void	ft_exec_multiple_nodes(t_node *node, t_shell *shell)
 {
 	size_t	i;
 
+	shell->is_multiple_node = 1;
 	i = 0;
 	while (i < shell->node_count)
 	{

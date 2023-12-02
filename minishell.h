@@ -74,6 +74,7 @@ typedef struct	s_shell
 	int						std_fd[2];//builtinを親プロセスで実行した後、stdinとstdoutのfdを元の状態に戻すために保管しておく。
 	int						is_single_node_builtin;//このケースだけは、forkを実行しないため、いろいろと例外が発生する。
 	int						single_node_builtin_error;
+	int 					is_multiple_node;
 }								t_shell;
 
 volatile sig_atomic_t	g_exit_status;
@@ -159,6 +160,7 @@ void	ft_free_node(t_node *node, t_shell *shell);
 void	ft_exec_builtin(t_node node, t_shell *shell);
 
 // shlvl.c
+size_t	ft_get_env_index(char **env, char *str);
 void	ft_increment_shlvl(t_shell *shell);
 
 // builtin/ft_echo.c
@@ -187,7 +189,7 @@ void					already_exist_variable_delete(char *var_equal, char **envp);
 int						is_valid_arg(char *arg);
 
 // builtin/ft_cd.c
-void					ft_cd(char *cmd_args, t_shell *shell);
+int ft_cd(char *cmd_args, t_shell *shell);
 void					cd_error_message(t_list *arg_list);
 int						count_char_until_slash(int i, char *buf);
 void					designated_home(char *buf, char **envp);
@@ -197,10 +199,12 @@ void					designated_parent(char *buf);
 void					ft_split_all_free(char **array);
 char					*getenv_curr_env(char *var_equal, char **envp);
 int						get_cmd_args_cnt(char **split_cmd_args);
+void	ft_change_envvar(char *var_equal, char *content, t_shell *shell);
 
 // minishell_utils.c
 void	ft_target_name_is_empty(char *target_name, char **new_word, t_shell *shell);
 int		ft_is_valid_as_redirect_type(t_type type);
 int		ft_is_amb(t_type type, char *target_name);
+void	ft_put_exit_or_not(t_shell *shell);
 
 #endif

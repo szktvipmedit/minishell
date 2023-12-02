@@ -53,9 +53,21 @@ int	get_name_equal_len(char *arg)
 int	is_valid_new_variable(char *arg)
 {
 	char *init_arg;
+	size_t i=0;
 	init_arg = arg;
 	if (!ft_strchr(init_arg, '='))
 		return (1);
+	while(arg[i])
+	{
+		if(arg[i] != '=')
+			break;
+		if(i == ft_strlen(arg) - 1)
+		{printf("minishell: export: `%s': not a valid identifier\n",
+					init_arg);
+			return 1;
+		}
+		i++;
+	}
 	while (*arg)
 	{
 		if (!ft_isalnum(*arg) && *arg != '_' && *arg != '=' && *(arg

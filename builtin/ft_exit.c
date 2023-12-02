@@ -66,23 +66,25 @@ void	ft_exit(char **args, t_shell *shell)
 {
 	if (args[0] == NULL)//exitコマンドに引数がない場合はここでexit。
 	{
-		ft_putstr_fd("exit\n", 2);
+		ft_put_exit_or_not(shell);
 		ft_free_all_and_exit(shell, 0);
 	}
 	g_exit_status = ft_str_to_exit_status(args[0]);
 	if (g_exit_status == -1)//exitコマンドの最初の引数が無効な時点で出るエラー。
 	{
-		ft_printf_stderr("exit\nminishell: exit: %s: numeric argument required\n", args[0]);
+		ft_put_exit_or_not(shell);
+		ft_printf_stderr("minishell: exit: %s: numeric argument required\n", args[0]);
 		ft_free_all_and_exit(shell, WITHOUT_EXIT);
 		exit(2);
 	}
 	if (args[1] != NULL)//exitコマンドの最初の引数は有効かつ、引数が２つ以上ある場合に出るエラー。
 	{
-		ft_putstr_fd("exit\nminishell: exit: too many arguments\n", 2);
+		ft_put_exit_or_not(shell);
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		g_exit_status = 1;
 		return ;
 	}
-	ft_putstr_fd("exit\n", 2);//exitコマンドに有効な引数が一つだけの場合。
+	ft_put_exit_or_not(shell);//exitコマンドに有効な引数が一つだけの場合。
 	ft_free_all_and_exit(shell, WITHOUT_EXIT);
 	exit(g_exit_status);
 }

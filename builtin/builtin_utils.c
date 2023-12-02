@@ -39,3 +39,21 @@ int	get_cmd_args_cnt(char **split_cmd_args)
 	}
 	return (argc);
 }
+
+void	ft_change_envvar(char *var_equal, char *content, t_shell *shell)
+{
+	size_t	i;
+	char		**env;
+
+	env = shell->environ_list_head;
+	i = ft_get_env_index(env, var_equal);
+	if (env[i] == NULL)
+		return ;
+	free(env[i]);
+	env[i] = ft_strjoin(var_equal, content);
+	if (env[i] == NULL)
+	{
+		ft_free_strs(shell->environ_list_head);
+		ft_msg_and_exit();
+	}
+}

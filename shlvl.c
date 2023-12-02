@@ -1,6 +1,5 @@
 #include "minishell.h"
-
-static size_t	ft_get_env_index(char **env, char *str)
+size_t	ft_get_env_index(char **env, char *str)
 {
 	size_t	i;
 

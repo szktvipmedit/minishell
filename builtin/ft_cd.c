@@ -29,6 +29,7 @@ t_list *create_path(char *buf)
         }
         else
             ft_lstadd_back(&path_list, ft_lstnew(ft_substr(buf, i, len)));
+        
         i = i + len;
     }
     return path_list;
@@ -69,10 +70,12 @@ static int chdir_designated(char **split_cmd_args, char **envp, t_shell *shell)
     t_list *arg_path_list;
 
     buf = ft_calloc(PATH_MAX + 1, 1);
+    printf("buf %p\n", buf);
     if(!buf) 
         ft_free_all_and_exit(shell, 1);
     getcwd(buf, PATH_MAX);
     arg_path_list = create_path(split_cmd_args[1]);
+    printf(" arg_path_list %p\n", arg_path_list);
     rewrite_buf(arg_path_list, buf, envp);
     if(!buf[0])
         buf[0] = '/';
@@ -82,11 +85,11 @@ static int chdir_designated(char **split_cmd_args, char **envp, t_shell *shell)
             cd_error_message(arg_path_list);
         else
             printf("minishell: cd: %s: Not a directory\n", split_cmd_args[1]);
-        return 1;
-        ft_lstclear(&arg_path_list, del);
+        ft_lstclear(&arg_path_list, free);
         free(buf);
+        return 1;
     }
-    ft_lstclear(&arg_path_list, del);
+    ft_lstclear(&arg_path_list, free);
     free(buf);
     return 0;
 }

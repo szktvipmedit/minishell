@@ -178,14 +178,14 @@ void	ft_pwd(t_shell *shell);
 // builtin/ft_export.c
 int						ft_export(char *cmd_args, t_shell *shell);
 void					append_env_variable(char *text, char **env, t_shell *shell);
-void					env_change_content(char *var_equal, char *text, char **envp);
+void					env_change_content(char *var_equal, char *text, t_shell *shell);
 bool					is_exist_variable(char *var_equal, char **env);
 int						get_name_equal_len(char *arg);
 int						is_valid_new_variable(char *arg);
 
 // builtin/ft_unset.c
 int						ft_unset(char *cmd_args, t_shell *shell);
-void					already_exist_variable_delete(char *var_equal, char **envp);
+void	already_exist_variable_delete(char *var_equal, char **env, t_shell *shell);
 int						is_valid_arg(char *arg);
 
 // builtin/ft_cd.c

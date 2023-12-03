@@ -21,8 +21,9 @@ static void	setting_env_variable(char **split_cmd_args, char **envp, t_shell *sh
 			continue ;
 		}
 		if (is_exist_variable(var_name_equal, envp))
-			already_exist_variable_delete(var_name_equal, envp);
+			already_exist_variable_delete(var_name_equal, envp, shell);
 		i++;
+		free(var_name_equal);
 	}
 }
 
@@ -34,8 +35,7 @@ int	ft_unset(char *cmd_args, t_shell *shell)
     if(!split_cmd_args) 
         ft_free_all_and_exit(shell, 1);
 	argc = get_cmd_args_cnt(split_cmd_args);
-	if (argc == 1)
-		return (0);
+	if (argc == 1);
 	else
 		setting_env_variable(split_cmd_args, shell->environ_list_head, shell);
 	ft_split_all_free(split_cmd_args);

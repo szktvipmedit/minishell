@@ -1,19 +1,34 @@
 #include "../minishell.h"
 
-void	already_exist_variable_delete(char *var_equal, char **envp)
+void	already_exist_variable_delete(char *var_equal, char **env, t_shell *shell)
 {
-	int	i;
-
+	size_t	i;
+	size_t  j;
+	size_t 	len_prev_envp;
+	char **new_env;
 	i = 0;
-	while (ft_strncmp(*envp, var_equal, ft_strlen(var_equal)))
-		envp++;
-	while (envp[i] != NULL)
+	j = 0;
+	len_prev_envp = 0;
+	while(env[len_prev_envp] != NULL)
+		len_prev_envp++;
+	new_env = (char **)malloc(sizeof(char *) * (len_prev_envp - 1));
+    if(!new_env) 
+        ft_free_all_and_exit(shell, 1);
+	while (env[i] != NULL)
 	{
-		envp[i] = envp[i + 1];
-		i++;
+		if(!ft_strncmp(env[i], var_equal, ft_strlen(var_equal)))
+		{
+			free(env[i]);
+			i++;
+		}
+		else
+			new_env[j++] = env[i++];
 	}
-	// printf("getenv_curr_env: %s\n", var_addr);
+	new_env[i + 1] = NULL;
+	free(shell->environ_list_head);
+	shell->environ_list_head = new_env;
 }
+
 int	is_valid_arg(char *arg)
 {
 	char *init_arg;

@@ -12,6 +12,7 @@ void	ft_append_char(char **new_word, char c, t_shell *shell)
 		ft_free_strs(shell->expand_free_list);
 		ft_free_all_and_exit(shell, 1);
 	}
+	printf("ft_append_char: new %p\n", new);
 	ft_strlcpy(new, *new_word, size);
 	new[size - 2] = c;
 	new[size - 1] = '\0';

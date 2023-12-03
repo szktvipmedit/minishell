@@ -26,6 +26,7 @@ static void	ft_clone_environ_list(t_shell *shell)
 	tmp = (char **)malloc(sizeof(char *) * (i + 1));
 	if (tmp == NULL)
 		ft_msg_and_exit();
+	printf("ft_clone_environ_list: tmp %p\n", tmp);
 	i = 0;
 	while (environ[i] != NULL)
 	{

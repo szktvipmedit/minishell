@@ -8,6 +8,7 @@ static char	*ft_read_until(int fd, char *buffer, int *is_error)
 	tmp = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (tmp == NULL)
 		return (ft_error_found(buffer, is_error));
+	printf("ft_read_until: tmp %p\n", tmp);
 	bytes_read = 1;
 	while (ft_strchr_null(buffer, '\n') == NULL && bytes_read != 0)
 	{
@@ -42,6 +43,7 @@ static char	*ft_clip_line(char *buffer, int *is_error)
 	str = (char *)malloc(sizeof(char) * (i + 2));
 	if (str == NULL)
 		return (ft_error_found(buffer, is_error));
+	printf("ft_clip_line: str %p\n", str);
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 	{
@@ -78,6 +80,7 @@ static char	*ft_save_remainder(char *buffer, int *is_error, char *nextline)
 		free(nextline);
 		return (ft_error_found(buffer, is_error));
 	}
+	printf("ft_save_remainder: new %p\n", str);
 	j = 0;
 	while (buffer[++i])
 		str[j++] = buffer[i];

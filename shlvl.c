@@ -18,19 +18,25 @@ void	ft_increment_shlvl(t_shell *shell)
 	size_t	i;
 	int			prev_lvl;
 	char		*tmp;
-	char		**env;
+	char *new_lvl;
 
-	env = shell->environ_list_head;
-	i = ft_get_env_index(env, "SHLVL=");
-	if (env[i] == NULL)
+	i = ft_get_env_index(shell->environ_list_head, "SHLVL=");
+	if (shell->environ_list_head[i] == NULL)
 		return ;
-	prev_lvl = ft_atoi(env[i] + 6);
-	tmp = env[i];
-	env[i] = ft_strjoin("SHLVL=", ft_itoa(prev_lvl + 1));
-	if (env[i] == NULL)
+	prev_lvl = ft_atoi(shell->environ_list_head[i] + 6);
+	tmp = shell->environ_list_head[i];
+	new_lvl = ft_itoa(prev_lvl + 1);
+	if(!new_lvl)
 	{
 		ft_free_strs(shell->environ_list_head);
 		ft_msg_and_exit();
 	}
+	shell->environ_list_head[i] = ft_strjoin("SHLVL=", new_lvl);
+	if (shell->environ_list_head[i] == NULL)
+	{
+		ft_free_strs(shell->environ_list_head);
+		ft_msg_and_exit();
+	}
+	free(new_lvl);
 	free(tmp);
 }

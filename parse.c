@@ -47,6 +47,7 @@ void	ft_parse(t_token *token, t_shell *shell)
 	node = (t_node *)malloc(sizeof(t_node) * shell->node_count);
 	if (node == NULL)
 		ft_free_all_and_exit(shell, 1);
+	printf("ft_parse: node %p\n", node);
 	shell->node_head = node;
 	i = 0;
 	while (i < shell->node_count)

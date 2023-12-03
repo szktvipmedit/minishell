@@ -31,6 +31,7 @@ char	*ft_strjoin_free(char *buffer, char *tmp, int *is_error)
 	str = (char *)malloc(sizeof(char) * (ft_strlen(buffer) + ft_strlen(tmp) + 1));
 	if (str == NULL)
 		return (ft_error_found(buffer, is_error));
+	printf("ft_strjoin_free: str %p\n", str);
 	i = 0;
 	while (buffer[i])
 	{
@@ -52,6 +53,7 @@ char	*ft_calloc_forone(size_t count, size_t size)
 	str = (char *)malloc(sizeof(char) * (size * count));
 	if (str == NULL)
 		return (NULL);
+	printf("ft_caloc_forone: str %p\n", str);
   str[0] = '\0';
 	return (str);
 }

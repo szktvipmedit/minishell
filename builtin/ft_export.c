@@ -66,10 +66,11 @@ static void	setting_env_variable(char **split_cmd_args, char **envp, t_shell *sh
 			continue ;
 		}
 		if (is_exist_variable(var_name_equal, envp))
-			env_change_content(var_name_equal, split_cmd_args[i], envp);
+			env_change_content(var_name_equal, split_cmd_args[i], shell);
 		else
 			append_env_variable(split_cmd_args[i], envp, shell);
 		i++;
+		free(var_name_equal);
 	}
 }
 

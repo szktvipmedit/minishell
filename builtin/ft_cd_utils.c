@@ -2,13 +2,13 @@
 
 void cd_error_message(t_list *arg_list)
 {
-    printf("minishell: cd: ");
+    ft_printf_stderr("minishell: cd: ");
     while(arg_list)
     {
-        printf("%s", (char *)arg_list->content);
+        ft_printf_stderr("%s", (char *)arg_list->content);
         arg_list = arg_list->next;
     }
-    printf(": No such file or directory\n");
+    ft_printf_stderr(": No such file or directory\n");
 }
 
 int count_char_until_slash(int i, char *buf)
@@ -52,4 +52,26 @@ void designated_parent(char *buf)
             ft_bzero(buf + len - 1, 1);
         len--;
     }
+}
+
+void buf_clean(char *buf)
+{
+    size_t i;
+    size_t j;
+    i = 0;
+    j = 0;
+    while(buf[i])
+    {
+        if(i > 0 && buf[i] == '/' && buf[i-1] == '/')
+        {
+            j = i;
+            while(buf[j])
+            {
+                buf[j] = buf[j+1];
+                j++;
+            }
+        }
+        i++;
+    }
+    printf("clean buf : %s\n", buf);
 }

@@ -47,7 +47,7 @@ char	**ft_split(char *s, char c)
 	if (s == NULL)
 		return (NULL);
 	strs = (char **)malloc(sizeof(char *) * (ft_count_words(s, c) + 1));
-	printf("ft_split: strs %p\n", strs);
+	//printf("ft_split: strs %p\n", strs);
 	if (strs == NULL)
 		return (NULL);
 	i = 0;

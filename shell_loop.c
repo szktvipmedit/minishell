@@ -24,14 +24,14 @@ static void	ft_interpret_line(char *line, t_shell *shell)
 {
 	ft_tokenize(line, shell);
 	if (shell->tokenize_error == -1)
-		return;
+		return ;
 	if (ft_check_syntax(shell->token_head) == -1)
-		return;
+		return ;
 	ft_parse(shell->token_head, shell);
 	ft_expand(shell->node_head, shell);
 	ft_heredoc(shell->node_head, shell);
 	if (shell->heredoc_error == -1)
-		return;
+		return ;
 	ft_execute(shell->node_head, shell);
 }
 

@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ft_free_all_and_exit(t_shell *shell, int	exit_type)
+void	ft_free_all_and_exit(t_shell *shell, int exit_type)
 {
 	ft_delete_heredoc_file(shell->node_head, shell);
 	ft_free_strs(shell->environ_list_head);
@@ -15,7 +15,7 @@ void	ft_free_all_and_exit(t_shell *shell, int	exit_type)
 	exit(0);
 }
 
-void	ft_msg_and_exit()
+void	ft_msg_and_exit(void)
 {
 	ft_putstr_fd("Fatal error. exit\n", 2);
 	exit(1);

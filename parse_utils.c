@@ -33,13 +33,13 @@ size_t	ft_count_args(t_token **node_head)
 char	**ft_create_args(t_token **node_head, size_t args_count, t_shell *shell)
 {
 	t_token	*tmp;
-	char		**args;
+	char	**args;
 	size_t	i;
 
 	args = (char **)malloc(sizeof(char *) * (args_count + 1));
 	if (args == NULL)
 		ft_free_all_and_exit(shell, 1);
-	printf("ft_create_args: new %p\n", args);
+	// //printf("ft_create_args: new %p\n", args);
 	tmp = *node_head;
 	i = 0;
 	while (tmp != NULL && tmp->type != PIPE)
@@ -76,21 +76,22 @@ size_t	ft_count_redirect(t_token **node_head)
 	return (redirect_count);
 }
 
-t_redirect *ft_redi(t_token **node_head, size_t redirects_count, t_shell *shell)//行数字数制限のため関数名省略。
+t_redirect	*ft_redi(t_token **node_head, size_t redirects_count,
+		t_shell *shell) //行数字数制限のため関数名省略。
 {
-	t_redirect	*redirects;
-	t_token			*tmp;
-	size_t			i;
+	t_redirect *redirects;
+	t_token *tmp;
+	size_t i;
 
 	redirects = (t_redirect *)malloc(sizeof(t_redirect) * redirects_count);
 	if (redirects == NULL)
 		ft_free_all_and_exit(shell, 1);
-	printf("ft_redi: new %p\n", redirects);
+	// //printf("ft_redi: new %p\n", redirects);
 	tmp = *node_head;
 	i = 0;
 	while (tmp != NULL && tmp->type != PIPE)
 	{
-		if (ft_is_valid_as_redirect_type(tmp->type))//行数文字数制限に対応。
+		if (ft_is_valid_as_redirect_type(tmp->type)) //行数文字数制限に対応。
 		{
 			redirects[i].target_name = ft_strdup(tmp->word);
 			if (redirects[i].target_name == NULL)

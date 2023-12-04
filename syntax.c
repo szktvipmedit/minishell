@@ -2,18 +2,20 @@
 
 static int	ft_syntax_error(char *word)
 {
-	ft_printf_stderr("minishell: syntax error near unexpected token `%s'\n", word);
+	ft_printf_stderr("minishell: syntax error near unexpected token `%s'\n",
+		word);
 	g_exit_status = 2;
 	return (-1);
 }
 
 static int	ft_pipe_error(void)
 {
-	ft_putstr_fd("Sorry, minishell does not support `|' without a following command.\n", 2);
+	ft_putstr_fd("Sorry, \
+		minishell does not support `|' without a following command.\n", 2);
 	return (-1);
 }
 
-int	ft_check_syntax(t_token	*token)
+int	ft_check_syntax(t_token *token)
 {
 	if (token->type == PIPE)
 		return (ft_syntax_error(token->word));
@@ -23,7 +25,8 @@ int	ft_check_syntax(t_token	*token)
 			return (ft_pipe_error());
 		else if ((token->type == REDIRECT) && token->next == NULL)
 			return (ft_syntax_error("newline"));
-		else if ((token->type == PIPE || token->type == REDIRECT) && token->next->type == PIPE)
+		else if ((token->type == PIPE || token->type == REDIRECT)
+			&& token->next->type == PIPE)
 			return (ft_syntax_error(token->next->word));
 		else if (token->type == REDIRECT && token->next->type == REDIRECT)
 			return (ft_syntax_error(token->next->word));

@@ -46,16 +46,18 @@ static char	*ft_create_temp_file(size_t node_index, t_shell *shell)
 	return (temp_file);
 }
 
-static void	ft_heredoc_loop(t_node *node, char *delimiter, int temp_fd, t_shell *shell)
+static void	ft_heredoc_loop(t_node *node, char *delimiter, int temp_fd,
+		t_shell *shell)
 {
 	char	*buf;
 
-	while(1)
+	while (1)
 	{
 		buf = readline("> ");
-		if(buf == NULL)
+		if (buf == NULL)
 		{
-			ft_printf_stderr("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n", delimiter);
+			ft_printf_stderr("minishell: warning: here-document delimited by end-of-file (wanted `%s')\n",
+				delimiter);
 			return ;
 		}
 		if (g_exit_status == 130)
@@ -63,7 +65,7 @@ static void	ft_heredoc_loop(t_node *node, char *delimiter, int temp_fd, t_shell 
 			shell->heredoc_error = -1;
 			return (free(buf));
 		}
-		if(ft_strcmp(buf, delimiter) == 0)
+		if (ft_strcmp(buf, delimiter) == 0)
 			return (free(buf));
 		if (node->delimiter_with_quote == 0)
 			buf = ft_expand_heredoc(buf, shell);
@@ -73,10 +75,11 @@ static void	ft_heredoc_loop(t_node *node, char *delimiter, int temp_fd, t_shell 
 	}
 }
 
-static void	ft_search_heredoc(t_redirect	*redirects, t_node *node, size_t node_index, t_shell *shell)
+static void	ft_search_heredoc(t_redirect *redirects, t_node *node,
+		size_t node_index, t_shell *shell)
 {
 	size_t	i;
-	int			temp_fd;
+	int		temp_fd;
 
 	i = 0;
 	while (i < node->redirects_count)
@@ -86,12 +89,12 @@ static void	ft_search_heredoc(t_redirect	*redirects, t_node *node, size_t node_i
 			if (node->temp_file == NULL)
 				node->temp_file = ft_create_temp_file(node_index, shell);
 			temp_fd = open(node->temp_file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if(temp_fd == -1)
+			if (temp_fd == -1)
 				ft_free_all_and_exit(shell, 1);
 			ft_heredoc_loop(node, redirects[i].target_name, temp_fd, shell);
 			close(temp_fd);
 			if (shell->heredoc_error == -1)
-				break;
+				break ;
 		}
 		i++;
 	}
@@ -108,7 +111,7 @@ void	ft_heredoc(t_node *node, t_shell *shell)
 	{
 		ft_search_heredoc(node[i].redirects, &node[i], i, shell);
 		if (shell->heredoc_error == -1)
-			break;
+			break ;
 		i++;
 	}
 }

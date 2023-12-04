@@ -11,7 +11,8 @@ void	already_exist_variable_delete(char *var_equal, char **env, t_shell *shell)
 	len_prev_envp = 0;
 	while(env[len_prev_envp] != NULL)
 		len_prev_envp++;
-	new_env = (char **)malloc(sizeof(char *) * (len_prev_envp - 1));
+	
+	new_env = (char **)malloc(sizeof(char *) * (len_prev_envp));
     if(!new_env) 
         ft_free_all_and_exit(shell, 1);
 	while (env[i] != NULL)
@@ -22,41 +23,42 @@ void	already_exist_variable_delete(char *var_equal, char **env, t_shell *shell)
 			i++;
 		}
 		else
-			new_env[j++] = env[i++];
+		{
+			new_env[j] = env[i];
+			j++;
+			i++;
+		}
 	}
-	new_env[i + 1] = NULL;
+	new_env[j + 1] = NULL;
 	free(shell->environ_list_head);
 	shell->environ_list_head = new_env;
 }
 
 int	is_valid_arg(char *arg)
 {
-	char *init_arg;
-	init_arg = arg;
-	if (ft_strchr(init_arg, '='))
+	size_t i;
+	i = 0;
+	if (ft_strchr(arg, '!'))
 	{
-		printf("minishell: unset: `%s': not a valid identifier\n", init_arg);
+		printf("minishell: unset: `%s': not a valid identifier\n", arg);
+		g_exit_status=1;
 		return (1);
 	}
-	while (*arg)
+	if (ft_strchr(arg, '='))
 	{
-		if (!ft_isalnum(*arg) && *arg != '_' && *arg != '=' && *(arg
-				+ 1) != '\0')
+		printf("minishell: unset: `%s': not a valid identifier\n", arg);
+		g_exit_status=1;
+		return (1);
+	}
+	while (arg[i])
+	{
+		if (!ft_isalnum(arg[i]) && arg[i] != '_')
 		{
-			if (*arg == '!')
-			{
-				if (*(arg + 1) == '=')
-					printf("minishell: export: `%s': not a valid identifier\n",
-						init_arg);
-				else
-					printf("minishell: %s: event not found\n", arg);
-			}
-			else
-				printf("minishell: export: `%s': not a valid identifier\n",
-					init_arg);
+			printf("minishell: unset: `%s': not a valid identifier\n", arg);
+			g_exit_status=1;
 			return (1);
 		}
-		arg++;
+		i++;
 	}
 	return (0);
 }

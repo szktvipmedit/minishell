@@ -72,41 +72,44 @@ int	get_name_equal_len(char *arg)
 
 int	is_valid_new_variable(char *arg)
 {
-	char *init_arg;
 	size_t i=0;
-	init_arg = arg;
-	if (!ft_strchr(init_arg, '='))
-		return (1);
+	size_t var_len;
+	var_len = 0;
+	//!をまず弾く
 	while(arg[i])
 	{
-		if(arg[i] != '=')
+		if(arg[i] == '!')
+		{
+			ft_putstr_fd("Sorry, minishell does not support `!'.\n", 2);
+			g_exit_status = 1;
+			return 1;
+		}
+		i++;
+	}	
+	i=0;
+	while(arg[var_len])
+	{
+		if(arg[var_len] == '=')
 			break;
-		if(i == ft_strlen(arg) - 1)
-		{printf("minishell: export: `%s': not a valid identifier\n",
-					init_arg);
+		var_len++;
+	}
+	if(var_len == 0)
+	{
+		ft_printf_stderr("minishell: export: `%s': not a valid identifier\n",arg);
+		g_exit_status = 1;
+		return 1;
+	}
+	while(i < var_len && arg[i])
+	{
+		if(!ft_isalpha(arg[i]) && arg[i] != '_')
+		{
+			ft_printf_stderr("minishell: export: `%s': not a valid identifier\n",arg);
+			g_exit_status = 1;
 			return 1;
 		}
 		i++;
 	}
-	while (*arg)
-	{
-		if (!ft_isalnum(*arg) && *arg != '_' && *arg != '=' && *(arg
-				+ 1) != '\0')
-		{
-			if (*arg == '!')
-			{
-				if (*(arg + 1) == '=')
-					printf("minishell: export: `%s': not a valid identifier\n",
-						init_arg);
-				else
-					printf("minishell: %s: event not found\n", arg);
-			}
-			else
-				printf("minishell: export: `%s': not a valid identifier\n",
-					init_arg);
-			return (1);
-		}
-		arg++;
-	}
+	if(var_len == ft_strlen(arg))
+		return 1;
 	return (0);
 }

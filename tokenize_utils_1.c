@@ -2,7 +2,8 @@
 
 static void	ft_specify_fd_error(char **line, t_shell *shell)
 {
-	ft_putstr_fd("Sorry, minishell does not support `[n]<', `[n]>', `[n]<<', `[n]>>'.\n", 2);
+	ft_putstr_fd("Sorry, minishell does not support `[n]<', `[n]>', \
+	`[n]<<',`[n]>>'.\n", 2);
 	while (**line != '\0')
 		(*line)++;
 	shell->tokenize_error = -1;
@@ -24,11 +25,13 @@ static void	ft_double_pipe_error(char **line, t_shell *shell)
 	shell->tokenize_error = -1;
 }
 
-static t_token	*ft_redirect_token(char **line, char *redirect, int word_len, t_shell *shell)
+static t_token	*ft_redirect_token(char **line, char *redirect, int word_len,
+		t_shell *shell)
 {
 	char	*word;
 
-	if (*line != shell->line && *(*line - 1) >= '0' && *(*line - 1) <= '9' && **line != '\0')
+	if (*line != shell->line && *(*line - 1) >= '0' && *(*line - 1) <= '9'
+		&& **line != '\0')
 		ft_specify_fd_error(line, shell);
 	word = ft_strdup(redirect);
 	if (word == NULL)

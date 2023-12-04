@@ -1,9 +1,10 @@
 #include "minishell.h"
 
-static char	*ft_create_candidate_cmd(char *path_str, char *cmd, char **paths, t_shell *shell)
+static char	*ft_create_candidate_cmd(char *path_str, char *cmd, char **paths,
+		t_shell *shell)
 {
 	char	*temp;
-	char		*candidate_cmd;
+	char	*candidate_cmd;
 
 	temp = ft_strjoin(path_str, "/");
 	if (temp == NULL)
@@ -22,18 +23,18 @@ static char	*ft_create_candidate_cmd(char *path_str, char *cmd, char **paths, t_
 	return (candidate_cmd);
 }
 
-static char *ft_search_cmd_from_path(char **paths, char *cmd, t_shell *shell)
+static char	*ft_search_cmd_from_path(char **paths, char *cmd, t_shell *shell)
 {
 	size_t	i;
-	char		*candidate_cmd;
+	char	*candidate_cmd;
 
 	if (access(cmd, X_OK) == 0)
 		return (cmd);
 	i = 0;
-	while(paths[i] != NULL)
+	while (paths[i] != NULL)
 	{
 		candidate_cmd = ft_create_candidate_cmd(paths[i], cmd, paths, shell);
-		if(access(candidate_cmd, X_OK) == 0)
+		if (access(candidate_cmd, X_OK) == 0)
 			return (candidate_cmd);
 		free(candidate_cmd);
 		i++;
@@ -45,8 +46,8 @@ static char	**ft_get_path_list(char **envp, t_shell *shell)
 {
 	char	**path_list;
 	char	*path_addr;
-	
-	while(*envp != NULL && ft_strncmp(*envp, "PATH=", 5))
+
+	while (*envp != NULL && ft_strncmp(*envp, "PATH=", 5))
 		envp++;
 	if (*envp == NULL)
 		return (NULL);

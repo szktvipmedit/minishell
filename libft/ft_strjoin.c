@@ -13,7 +13,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	str = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
 	if (str == NULL)
 		return (NULL);
-	printf("ft_strjoin: new %p\n", str);
+	//printf("ft_strjoin: new %p\n", str);
 	ft_strlcpy(str, s1, (s1_len + 1));
 	ft_strlcpy(&str[s1_len], s2, (s2_len + 1));
 	return (str);

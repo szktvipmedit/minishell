@@ -11,7 +11,7 @@ void	*ft_calloc(size_t count, size_t size)
 	ptr = (void *)malloc(size * count);
 	if (ptr == NULL)
 		return (NULL);
-	printf("ft_calloc: new %p\n", ptr);
+	//printf("ft_calloc: new %p\n", ptr);
 	ft_bzero(ptr, (size * count));
 	return (ptr);
 }

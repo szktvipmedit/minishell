@@ -1,6 +1,7 @@
 #include "minishell.h"
 
-static void	ft_create_expanded_str(char **old_word, char **new_word, t_shell *shell)
+static void	ft_create_expanded_str(char **old_word, char **new_word,
+		t_shell *shell)
 {
 	while (**old_word != '\0')
 	{
@@ -11,7 +12,7 @@ static void	ft_create_expanded_str(char **old_word, char **new_word, t_shell *sh
 		else if (**old_word == '$')
 			ft_dollar_to_environ(old_word, new_word, shell);
 		else
-		{
+		{	
 			ft_append_char(new_word, **old_word, shell);
 			(*old_word)++;
 		}
@@ -50,8 +51,8 @@ static void	ft_replace_delimiter(char **delimiter, t_node *node, t_shell *shell)
 static void	ft_replace_args(char **args, t_shell *shell)
 {
 	size_t	i;
-	char		*old_word;
-	char		*new_word;
+	char	*old_word;
+	char	*new_word;
 
 	i = 0;
 	while (args[i] != NULL)
@@ -61,19 +62,20 @@ static void	ft_replace_args(char **args, t_shell *shell)
 		if (new_word == NULL)
 			ft_free_all_and_exit(shell, 1);
 		shell->expand_free_list[0] = new_word;
-		ft_create_expanded_str(&old_word, &new_word, shell);//共通の関数。
+		ft_create_expanded_str(&old_word, &new_word, shell); //共通の関数。
 		free(args[i]);
 		args[i] = new_word;
-		ft_reset_expand_free_list(shell->expand_free_list);//こまめにfreeして再利用する。
+		ft_reset_expand_free_list(shell->expand_free_list); //こまめにfreeして再利用する。
 		i++;
 	}
 }
 
-void	ft_replace_target(t_redirect	*redirects, t_node *node, t_shell *shell)//行数字数制限のためstatic外した。
+void	ft_replace_target(t_redirect *redirects, t_node *node, t_shell *shell)
+		//行数字数制限のためstatic外した。
 {
-	size_t	i;
-	char		*old_word;
-	char		*new_word;
+	size_t i;
+	char *old_word;
+	char *new_word;
 
 	i = 0;
 	while (i < node->redirects_count)
@@ -88,8 +90,10 @@ void	ft_replace_target(t_redirect	*redirects, t_node *node, t_shell *shell)//行
 				ft_free_all_and_exit(shell, 1);
 			shell->expand_free_list[0] = new_word;
 			ft_create_expanded_str(&old_word, &new_word, shell);
-			if (new_word[0] == '\0')//redirectのtargetがexpandによってヌル文字になってしまった時の例外処理
-				ft_target_name_is_empty(redirects[i].target_name, &new_word, shell);
+			if (new_word[0] == '\0')
+				// redirectのtargetがexpandによってヌル文字になってしまった時の例外処理
+				ft_target_name_is_empty(redirects[i].target_name, &new_word,
+					shell);
 			free(redirects[i].target_name);
 			redirects[i].target_name = new_word;
 		}

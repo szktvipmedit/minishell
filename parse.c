@@ -47,7 +47,7 @@ void	ft_parse(t_token *token, t_shell *shell)
 	node = (t_node *)malloc(sizeof(t_node) * shell->node_count);
 	if (node == NULL)
 		ft_free_all_and_exit(shell, 1);
-	printf("ft_parse: node %p\n", node);
+	// //printf("ft_parse: node %p\n", node);
 	shell->node_head = node;
 	i = 0;
 	while (i < shell->node_count)
@@ -59,7 +59,8 @@ void	ft_parse(t_token *token, t_shell *shell)
 		if (node[i].redirects_count == 0)
 			node[i].redirects = NULL;
 		else
-			node[i].redirects = ft_redi(&node_head, node[i].redirects_count, shell);//行数文字数制限に対応。
+			node[i].redirects = ft_redi(&node_head, node[i].redirects_count,
+					shell); //行数文字数制限に対応。
 		node[i].temp_file = NULL;
 		node[i].delimiter_with_quote = 0;
 		i++;

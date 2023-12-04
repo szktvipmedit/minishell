@@ -35,7 +35,7 @@ static void	ft_get_exit_status(char **new_word, t_shell *shell)
 static char	*ft_get_environ(char *src, char **env, t_shell *shell)
 {
 	size_t	i;
-	char		*value;
+	char	*value;
 
 	i = 0;
 	value = NULL;
@@ -65,7 +65,7 @@ static void	ft_search_same_variable(char **new_word, char *src, t_shell *shell)
 		ft_get_exit_status(new_word, shell);
 		return ;
 	}
-	value = ft_get_environ(src, shell->environ_list_head, shell); 
+	value = ft_get_environ(src, shell->environ_list_head, shell);
 	if (value == NULL)
 	{
 		ft_append_char(new_word, '\0', shell);
@@ -79,7 +79,6 @@ static void	ft_search_same_variable(char **new_word, char *src, t_shell *shell)
 void	ft_dollar_to_environ(char **old_word, char **new_word, t_shell *shell)
 {
 	char	*src;
-
 	src = ft_calloc(1, 1);
 	if (src == NULL)
 	{
@@ -90,6 +89,7 @@ void	ft_dollar_to_environ(char **old_word, char **new_word, t_shell *shell)
 	if (ft_create_src_variable(old_word, &src, shell) == 1)
 	{
 		ft_append_char(new_word, '$', shell);
+		free(src);
 		return ;
 	}
 	ft_search_same_variable(new_word, src, shell);

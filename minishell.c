@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	ft_terminal_setting()
+static void	ft_terminal_setting(void)
 {
 	struct termios	term_settings;
 
@@ -17,8 +17,8 @@ static void	ft_initialize_shell(t_shell *shell)
 static void	ft_clone_environ_list(t_shell *shell)
 {
 	extern char	**environ;
-	char				**tmp;
-	size_t			i;
+	char		**tmp;
+	size_t		i;
 
 	i = 0;
 	while (environ[i] != NULL)
@@ -26,7 +26,7 @@ static void	ft_clone_environ_list(t_shell *shell)
 	tmp = (char **)malloc(sizeof(char *) * (i + 1));
 	if (tmp == NULL)
 		ft_msg_and_exit();
-	printf("ft_clone_environ_list: tmp %p\n", tmp);
+	// //printf("ft_clone_environ_list: tmp %p\n", tmp);
 	i = 0;
 	while (environ[i] != NULL)
 	{
@@ -45,7 +45,7 @@ static void	ft_clone_environ_list(t_shell *shell)
 int	main(int argc, char **argv)
 {
 	t_shell	shell;
-	
+
 	(void)argv;
 	if (argc != 1)
 	{

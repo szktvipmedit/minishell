@@ -22,7 +22,8 @@ static bool	ft_check_quote_closed(char **line, char quote_type)
 
 static int	ft_skip_word_part(char **line)
 {
-	while (**line != '\0' && **line != ' ' && **line != '\t' && **line != '|' && **line != '<' && **line != '>')
+	while (**line != '\0' && **line != ' ' && **line != '\t' && **line != '|'
+		&& **line != '<' && **line != '>')
 	{
 		if (**line == '\'')
 		{

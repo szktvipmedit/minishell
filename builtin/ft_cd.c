@@ -35,11 +35,6 @@ t_list *create_path(char *buf)
     return path_list;
 }
 
-static void del()
-{
-    return ;
-}
-
 static void rewrite_buf(t_list *arg_path_list, char *buf, char **envp)
 {
     while(arg_path_list)
@@ -48,8 +43,7 @@ static void rewrite_buf(t_list *arg_path_list, char *buf, char **envp)
             designated_home(buf, envp);
         else if(!ft_strncmp(arg_path_list->content, "..", 3) || !ft_strncmp(arg_path_list->content, "../", 4))
            designated_parent(buf);
-        else if(!ft_strncmp(arg_path_list->content, "./", 3) || !ft_strncmp(arg_path_list->content, ".", 2))
-            del();
+        else if(!ft_strncmp(arg_path_list->content, "./", 3) || !ft_strncmp(arg_path_list->content, ".", 2));
         else if(!ft_strncmp(arg_path_list->content, "/", 2))
         {
             ft_bzero(buf, PATH_MAX);
@@ -63,19 +57,19 @@ static void rewrite_buf(t_list *arg_path_list, char *buf, char **envp)
     }
 }
 
-static int chdir_designated(char **split_cmd_args, char **envp, t_shell *shell)
+static int chdir_designated(char **args, char **envp, t_shell *shell)
 {
     char *buf;
     struct stat stat_buf;
     t_list *arg_path_list;
 
     buf = ft_calloc(PATH_MAX + 1, 1);
-    printf("buf %p\n", buf);
+    // printf("buf %p\n", buf);
     if(!buf) 
         ft_free_all_and_exit(shell, 1);
     getcwd(buf, PATH_MAX);
-    arg_path_list = create_path(split_cmd_args[1]);
-    printf(" arg_path_list %p\n", arg_path_list);
+    arg_path_list = create_path(args[0]);
+    // printf(" arg_path_list %p\n", arg_path_list);
     rewrite_buf(arg_path_list, buf, envp);
     if(!buf[0])
         buf[0] = '/';
@@ -84,43 +78,52 @@ static int chdir_designated(char **split_cmd_args, char **envp, t_shell *shell)
         if(stat(buf, &stat_buf) || S_ISDIR(stat_buf.st_mode))
             cd_error_message(arg_path_list);
         else
-            printf("minishell: cd: %s: Not a directory\n", split_cmd_args[1]);
+            ft_printf_stderr("minishell: cd: %s: Not a directory\n", args[0]);
         ft_lstclear(&arg_path_list, free);
         free(buf);
         return 1;
     }
+
+    buf_clean(buf);
+    ft_change_envvar("PWD=", buf, shell);
     ft_lstclear(&arg_path_list, free);
     free(buf);
     return 0;
 }
 
-int ft_cd(char *cmd_args, t_shell *shell)
+void ft_cd(char **args, t_shell *shell)
 {
     int argc;
-    char **split_cmd_args;
     char oldpwd[PATH_MAX+1];
+	char *cmd_args;
+
+	cmd_args = ft_create_cmd_args(args);
     if(getcwd(oldpwd, PATH_MAX+1) == NULL)
         ft_free_all_and_exit(shell, 1);
-    printf("%s\n", oldpwd);
-    split_cmd_args = ft_split(cmd_args, ' ');
-    if(!split_cmd_args) 
-        ft_free_all_and_exit(shell, 1);
-    argc = get_cmd_args_cnt(split_cmd_args);
-    if(argc == 1)
+    // printf("%s\n", oldpwd);
+    argc = get_cmd_args_cnt(args);
+    if(argc == 0)
     {
         char *home_addr;
         home_addr = getenv_curr_env("HOME=", shell->environ_list_head);
         if(!home_addr)
-            printf("minishell: cd: HOME not set\n");
+        {
+            ft_printf_stderr("minishell: cd: HOME not set\n");
+            g_exit_status = 1;
+        }
         else
-            chdir(getenv_curr_env("HOME=", shell->environ_list_head));
+        {
+            if(chdir(getenv_curr_env("HOME=", shell->environ_list_head)) < 0)
+                g_exit_status = 1;
+            ft_change_envvar("PWD=", getenv_curr_env("HOME=", shell->environ_list_head), shell);
+        }
     }
     else
     {
-        if(chdir_designated(split_cmd_args, shell->environ_list_head, shell))
-            return 1; 
+        if(chdir_designated(args, shell->environ_list_head, shell))
+            g_exit_status = 1;
     }
-    ft_split_all_free(split_cmd_args);
     ft_change_envvar("OLDPWD=", oldpwd, shell);
-    return 0;
+    free(cmd_args);
+    return ;
 }

@@ -3,7 +3,7 @@
 static void	ft_wait_child_Processes(t_node *node, t_shell *shell)
 {
 	size_t	i;
-	int			status;
+	int		status;
 
 	i = 0;
 	while (i < shell->node_count)
@@ -14,12 +14,11 @@ static void	ft_wait_child_Processes(t_node *node, t_shell *shell)
 	}
 	ft_set_exit_status(status);
 }
- 
+
 static void	ft_close_used_pipe(t_node *node, size_t i, t_shell *shell)
 {
 	if (i == 0)
 		return ;
-
 	if (close(node[i - 1].pipe_fd[0]) == -1)
 		ft_free_all_and_exit(shell, 1);
 	if (close(node[i - 1].pipe_fd[1]) == -1)

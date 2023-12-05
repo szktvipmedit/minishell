@@ -71,8 +71,8 @@ typedef struct s_shell
 	t_node				*node_head;
 	int					heredoc_error;
 	char				*expand_free_list[6];
-	int std_fd[2];             
-		// builtinを親プロセスで実行した後、stdinとstdoutのfdを元の状態に戻すために保管しておく。
+	int					std_fd[2];
+	// builtinを親プロセスで実行した後、stdinとstdoutのfdを元の状態に戻すために保管しておく。
 	int is_single_node_builtin; //このケースだけは、forkを実行しないため、いろいろと例外が発生する。
 	int					single_node_builtin_error;
 	int					is_multiple_node;
@@ -200,7 +200,6 @@ int						is_valid_new_variable(char *arg);
 int						ft_unset(char **args, t_shell *shell);
 void					already_exist_variable_delete(char *var_equal,
 							char **env, t_shell *shell);
-int						is_valid_arg(char *arg);
 
 // builtin/ft_cd.c
 void					ft_cd(char **args, t_shell *shell);
@@ -208,7 +207,9 @@ void					cd_error_message(t_list *arg_list);
 int						count_char_until_slash(int i, char *buf);
 void					designated_home(char *buf, char **envp);
 void					designated_parent(char *buf);
-void buf_clean(char *buf);
+void					buf_clean(char *buf);
+void					chdir_designated_failed(char **args, char *buf,
+							struct stat *stat_buf, t_list *arg_path_list);
 
 // builtin/builtin_utils.c
 void					ft_split_all_free(char **array);

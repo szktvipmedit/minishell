@@ -3,22 +3,23 @@
 static void	arg1_case_print(char search, char **envp)
 {
 	int	i;
+	int	j;
 
 	i = 0;
 	while (envp[i] != NULL)
 	{
-		int j = 0;
-		if(search == '_' && envp[i][1] == '=')
+		j = 0;
+		if (search == '_' && envp[i][1] == '=')
 			return ;
 		if (envp[i][j] == search)
 		{
-        	printf("declare -x ");
-			while(envp[i][j] && envp[i][j] != '=')
+			printf("declare -x ");
+			while (envp[i][j] && envp[i][j] != '=')
 				printf("%c", envp[i][j++]);
-			if(envp[i][j] && envp[i][j++] == '=')
+			if (envp[i][j] && envp[i][j++] == '=')
 				printf("=");
 			printf("\"");
-			while(envp[i][j] && envp[i][j] != '=')
+			while (envp[i][j] && envp[i][j] != '=')
 				printf("%c", envp[i][j++]);
 			printf("\"\n");
 		}
@@ -55,10 +56,9 @@ static void	setting_env_variable(char **args, char **envp, t_shell *shell)
 	{
 		if (args[i][0] == '#')
 			arg1_case(envp);
-		var_name_equal = ft_strndup(args[i],
-				get_name_equal_len(args[i]));
-    	if(!var_name_equal) 
-   		    ft_free_all_and_exit(shell, 1);
+		var_name_equal = ft_strndup(args[i], get_name_equal_len(args[i]));
+		if (!var_name_equal)
+			ft_free_all_and_exit(shell, 1);
 		if (is_valid_new_variable(args[i]))
 		{
 			i++;
@@ -67,14 +67,14 @@ static void	setting_env_variable(char **args, char **envp, t_shell *shell)
 		}
 		if (is_exist_variable(var_name_equal, envp))
 			env_change_content(var_name_equal, args[i], shell);
-		else 
+		else
 			append_env_variable(args[i], envp, shell);
 		i++;
 		free(var_name_equal);
 	}
 }
 
-void 	ft_export(char **args, t_shell *shell)
+void	ft_export(char **args, t_shell *shell)
 {
 	int argc;
 	char *cmd_args;

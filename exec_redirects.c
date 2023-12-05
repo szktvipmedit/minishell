@@ -3,7 +3,6 @@
 static void	ft_ambiguous_redirect(char *target_name, t_shell *shell)
 {
 	ft_printf_stderr("minishell: %s: ambiguous redirect\n", target_name + 2);
-		//$?以降の元々のtarget_name
 	if (shell->is_single_node_builtin == 1)
 	{
 		shell->single_node_builtin_error = -1;
@@ -19,11 +18,11 @@ static int	ft_open_error_and_exit(char *file_name, t_shell *shell)
 	if (errno == ENOENT)
 		ft_printf_stderr("minishell: %s: No such file or directory\n",
 			file_name);
-	if (shell->is_single_node_builtin == 1) //このケースだけは親プロセスのためexitできない。例外処理が必要。
+	if (shell->is_single_node_builtin == 1)
 	{
 		shell->single_node_builtin_error = -1;
-		g_exit_status = 1; // builtinの終了ステータスを1にセットする。
-		return (-1);       //とりあえずexitせずにこの関数を終わらせたい。
+		g_exit_status = 1;
+		return (-1);
 	}
 	ft_free_all_and_exit(shell, WITHOUT_EXIT);
 	exit(1);
@@ -80,7 +79,7 @@ void	ft_prepare_redirects(t_node node, t_shell *shell)
 			|| node.redirects[i].type == DELIMITER)
 		{
 			if (ft_is_amb(node.redirects[i].type,
-					node.redirects[i].target_name)) // delimiterは例外
+					node.redirects[i].target_name))
 				return (ft_ambiguous_redirect(node.redirects[i].target_name,
 						shell));
 			if (ft_get_infile(node, node.redirects[i], shell) == -1)
@@ -90,7 +89,6 @@ void	ft_prepare_redirects(t_node node, t_shell *shell)
 			|| node.redirects[i].type == APPENDFILE)
 		{
 			if (ft_strncmp(node.redirects[i].target_name, "$?", 2) == 0)
-				//$?がexpandされずに残ってる＝異常事態
 				return (ft_ambiguous_redirect(node.redirects[i].target_name,
 						shell));
 			if (ft_get_outfile(node.redirects[i], shell) == -1)

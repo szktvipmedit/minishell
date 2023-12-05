@@ -7,9 +7,9 @@ static void	ft_exec_single_node(t_node *node, t_shell *shell)
 
 	if (ft_is_builtin(node[0].args[0]) == true)
 	{
-		shell->is_single_node_builtin = 1; //例外ケース対応が必要なため、1にセットしておく。
+		shell->is_single_node_builtin = 1;
 		ft_exec_builtin(node[0], shell);
-		return ; //親プロセスのためexitできない。終了ステータスはbuiltin関数内で更新済み。freeはft_resetで行う。
+		return ;
 	}
 	pid = fork();
 	if (pid == -1)

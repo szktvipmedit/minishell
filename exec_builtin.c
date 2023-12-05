@@ -44,14 +44,14 @@ static void	ft_store_std_fd(t_shell *shell)
 
 void	ft_exec_builtin(t_node node, t_shell *shell)
 {
-	ft_store_std_fd(shell);                                        
-		// 1.stdinとstdoutのfdをdupで保存する。
-	ft_prepare_redirects(node, shell);                             
-		// 2.stdinとstdoutをinfile,outfileにdup2で変更する。
-	if (shell->single_node_builtin_error != -1)                    
+	ft_store_std_fd(shell);
+	// 1.stdinとstdoutのfdをdupで保存する。
+	ft_prepare_redirects(node, shell);
+	// 2.stdinとstdoutをinfile,outfileにdup2で変更する。
+	if (shell->single_node_builtin_error != -1)
 		//上の関数でエラーが起きていなければ続行。
 		ft_select_and_exec_cmd(node.args[0], node.args + 1, shell);
-			//第一引数はコマンド、第二引数はコマンド分を一つずらしたコマンドの引数。
-	ft_reset_std_fd(shell);                                        
-		// 3.stdinとstdoutをdupで保存したfdにdup2で戻す。dupしたものはcloseする。
+	//第一引数はコマンド、第二引数はコマンド分を一つずらしたコマンドの引数。
+	ft_reset_std_fd(shell);
+	// 3.stdinとstdoutをdupで保存したfdにdup2で戻す。dupしたものはcloseする。
 } // forkした子プロセスなら必要ないが、親プロセスはstd_fdを元の状態に戻す必要がある。

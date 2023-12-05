@@ -3,7 +3,8 @@
 static void	ft_specify_fd_error(char **line, t_shell *shell)
 {
 	ft_putstr_fd("Sorry, minishell does not support `[n]<', `[n]>', \
-	`[n]<<',`[n]>>'.\n", 2);
+	`[n]<<',`[n]>>'.\n",
+					2);
 	while (**line != '\0')
 		(*line)++;
 	shell->tokenize_error = -1;

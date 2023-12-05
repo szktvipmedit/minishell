@@ -1,30 +1,31 @@
 #include "../minishell.h"
 
-char *ft_create_cmd_args(char **args)
+char	*ft_create_cmd_args(char **args)
 {
-    int i;
-    int len;
+	int		i;
+	int		len;
+	char	*cmd_args;
+
 	i = 0;
 	len = 0;
-
-    char *cmd_args;
- 	while(args[i])
+	while (args[i])
 	{
 		len += ft_strlen(args[i++]) + 1;
-		if(args[i])
+		if (args[i])
 			len++;
 	}
-	cmd_args = ft_calloc((len + 1),  1);
+	cmd_args = ft_calloc((len + 1), 1);
 	i = 0;
-    while(args[i])
-    {
-		ft_strlcat(cmd_args, args[i], len+1);
-        i++;
-		if(args[i])
-			ft_strlcat(cmd_args, " ", len+1);
-   }
-    return cmd_args;
+	while (args[i])
+	{
+		ft_strlcat(cmd_args, args[i], len + 1);
+		i++;
+		if (args[i])
+			ft_strlcat(cmd_args, " ", len + 1);
+	}
+	return (cmd_args);
 }
+
 void	ft_split_all_free(char **array)
 {
 	int	i;
@@ -48,8 +49,8 @@ char	*getenv_curr_env(char *var_equal, char **envp)
 
 	while (*envp && ft_strncmp(*envp, var_equal, ft_strlen(var_equal)))
 		envp++;
-	if(*envp == NULL)
-		return NULL;
+	if (*envp == NULL)
+		return (NULL);
 	var_addr = *envp + ft_strlen(var_equal);
 	return (var_addr);
 }
@@ -70,7 +71,7 @@ int	get_cmd_args_cnt(char **split_cmd_args)
 void	ft_change_envvar(char *var_equal, char *content, t_shell *shell)
 {
 	size_t	i;
-	char		**env;
+	char	**env;
 
 	env = shell->environ_list_head;
 	i = ft_get_env_index(env, var_equal);

@@ -10,7 +10,7 @@ static int	ft_syntax_error(char *word)
 
 static int	ft_pipe_error(void)
 {
-	ft_putstr_fd("Sorry, \
+	ft_putstr_fd("Sorry,\
 		minishell does not support `|' without a following command.\n", 2);
 	return (-1);
 }

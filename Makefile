@@ -33,10 +33,12 @@ SRCS		= minishell.c \
 					builtin/ft_pwd.c \
 					builtin/ft_export.c \
 					builtin/ft_export_utils.c \
+					builtin/ft_export_utils2.c \
 					builtin/ft_unset.c \
 					builtin/ft_unset_utils.c \
 					builtin/ft_cd.c \
 					builtin/ft_cd_utils.c \
+					builtin/ft_cd_util2s.c \
 					builtin/builtin_utils.c \
 					minishell_utils.c
 
